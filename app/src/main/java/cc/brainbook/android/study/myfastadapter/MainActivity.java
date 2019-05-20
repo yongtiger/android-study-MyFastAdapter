@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mikepenz.itemanimators.SlideDownAlphaAnimator;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -25,6 +26,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +53,23 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 ////        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
 
+        mAdapter = new RecyclerViewAdapter(DummyContent.ITEM_MAP);
+//        mRecyclerView.setAdapter(mAdapter);
 
 
+        ///[RecyclerView Animators#Item Animation]
+        ///https://github.com/mikepenz/ItemAnimators
+        ///Note: does not animate items on scroll, just when added, removed, moved, or changed
+        mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
+        mRecyclerView.getItemAnimator().setAddDuration(500);
+        mRecyclerView.getItemAnimator().setRemoveDuration(500);
 
-//        mRecyclerView.setAdapter(mFastAdapter);
-//        mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
-//        mRecyclerView.getItemAnimator().setAddDuration(500);
-//        mRecyclerView.getItemAnimator().setRemoveDuration(500);
 
-//        mRecyclerView.setAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP));
-
-
-        ///[Scroll Animation]
+        ///[RecyclerView Animators#Scroll Animation]
         ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
-//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)));
-        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)))); ///chain adapter
+//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mAdapter));
+        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mAdapter))); ///chain adapter
 
     }
 

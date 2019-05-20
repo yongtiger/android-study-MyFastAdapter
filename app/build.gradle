@@ -67,7 +67,12 @@ dependencies {
     }
 
 
-    ///[Scroll Animation]
+    ///[RecyclerView Animators#Item Animation]
+    ///https://github.com/mikepenz/ItemAnimators
+    ///Note: does not animate items on scroll, just when added, removed, moved, or changed
+    implementation 'com.mikepenz:itemanimators:1.0.2@aar'
+
+    ///[RecyclerView Animators#Scroll Animation]
     ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 }
