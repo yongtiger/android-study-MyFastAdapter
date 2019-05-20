@@ -20,6 +20,8 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import cc.brainbook.android.study.myfastadapter.dummy.DummyContent;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
@@ -57,7 +59,14 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.getItemAnimator().setAddDuration(500);
 //        mRecyclerView.getItemAnimator().setRemoveDuration(500);
 
-        mRecyclerView.setAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP));
+//        mRecyclerView.setAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP));
+
+
+        ///[Scroll Animation]
+        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
+//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)));
+        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(new RecyclerViewAdapter(DummyContent.ITEM_MAP)))); ///chain adapter
 
     }
 

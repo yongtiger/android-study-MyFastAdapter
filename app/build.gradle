@@ -65,4 +65,9 @@ dependencies {
         transitive = true
         exclude group: "com.mikepenz"
     }
+
+
+    ///[Scroll Animation]
+    ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
+    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 }
