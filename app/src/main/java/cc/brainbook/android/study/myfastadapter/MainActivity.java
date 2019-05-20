@@ -1,24 +1,15 @@
 package cc.brainbook.android.study.myfastadapter;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.mikepenz.itemanimators.SlideDownAlphaAnimator;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import cc.brainbook.android.study.myfastadapter.dummy.DummyContent;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -108,14 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 mRecyclerView.setLayoutManager(linearLayoutManager);
                 item.setIcon(R.drawable.ic_view_grid_white_24dp);
                 item.setTitle("grid_layout");//next click
-//                showNewLayoutInfo(item);
             } else if (mRecyclerView.getLayoutManager() instanceof GridLayoutManager) {
                 ///StaggeredGridLayoutManager
                 mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 //                mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
                 item.setIcon(R.drawable.ic_view_agenda_white_24dp);
                 item.setTitle("linear_layout");//next click
-//                showNewLayoutInfo(item);
             } else {
                 ///GridLayoutManager
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -123,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 mRecyclerView.setLayoutManager(gridLayoutManager);
                 item.setIcon(R.drawable.ic_dashboard_white_24dp);
                 item.setTitle("staggered_layout");//next click
-//                showNewLayoutInfo(item);
             }
         }
         return super.onOptionsItemSelected(item);
