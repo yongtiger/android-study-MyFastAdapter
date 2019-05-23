@@ -32,7 +32,8 @@ dependencies {
     ///Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 
-    ///
+
+    /* ------------------------ fastadapter ------------------------ */
 //    The library is split up into core, commons, and extensions. The core functions are included in the following dependency.
     implementation 'com.mikepenz:fastadapter:3.2.9'
     implementation  'com.android.support:appcompat-v7:28.0.0'
@@ -58,15 +59,8 @@ dependencies {
     // https://github.com/mikepenz/Materialize
     implementation 'com.mikepenz:materialize:1.1.2@aar'
 
-    //////////////////
-    //used to generate the drawer on the left
-    //https://github.com/mikepenz/MaterialDrawer
-    implementation('com.mikepenz:materialdrawer:6.0.7@aar') {
-        transitive = true
-        exclude group: "com.mikepenz"
-    }
 
-
+    /* ------------------------ RecyclerView Animators ------------------------ */
     ///[RecyclerView Animators#Item Animation]
     ///https://github.com/mikepenz/ItemAnimators
     ///Note: does not animate items on scroll, just when added, removed, moved, or changed
@@ -75,4 +69,5 @@ dependencies {
     ///[RecyclerView Animators#Scroll Animation]
     ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
+
 }
