@@ -88,4 +88,11 @@ dependencies {
     ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 
+
+/* ------------------------ ///[MaterialScrollBar] ------------------------ */
+    //Used to provide the FastScrollBar
+    //https://github.com/krimin-killr21/MaterialScrollBar
+    //    implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.1'
+    implementation 'com.github.turing-tech:MaterialScrollBar:13.3.0'
+
 }

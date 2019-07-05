@@ -2,6 +2,7 @@ package cc.brainbook.android.study.myfastadapter;
 
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,11 +21,14 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.listeners.OnClickListener;
 import com.mikepenz.fastadapter_extensions.HeaderHelper;
 import com.mikepenz.itemanimators.SlideDownAlphaAnimator;
+import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
+import com.turingtechnologies.materialscrollbar.DragScrollBar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import cc.brainbook.android.study.myfastadapter.adapter.AnimationWrapAdapter;
+import cc.brainbook.android.study.myfastadapter.adapter.FastScrollIndicatorAdapter;
 import cc.brainbook.android.study.myfastadapter.dummy.ImageDummyData;
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
@@ -53,7 +57,32 @@ public class MainActivity extends AppCompatActivity {
 //        mFastAdapter = FastAdapter.with(Arrays.asList(itemAdapter));
 
         ///set our adapters to the RecyclerView
-        mRecyclerView.setAdapter(mFastAdapter);
+//        mRecyclerView.setAdapter(mFastAdapter);
+
+
+        /* -------------- ///[MaterialScrollBar] -------------- */
+        FastScrollIndicatorAdapter fastScrollIndicatorAdapter = new FastScrollIndicatorAdapter();
+//        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(mFastAdapter));
+
+        //add a FastScrollBar (Showcase compatibility)
+//        DragScrollBar materialScrollBar = new DragScrollBar(this, recyclerView, true);
+//        materialScrollBar.setHandleColor(ContextCompat.getColor(this, R.color.accent));
+//        materialScrollBar.setIndicator(new AlphabetIndicator(this), true);
+        ((DragScrollBar)findViewById(R.id.dragScrollBar))
+                .setHandleColor(ContextCompat.getColor(this, R.color.accent))
+                ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
+                .setIndicator(new AlphabetIndicator(this), true);
+
+
+        /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
+        ///Error: 无数据！需要用AnimationWrapAdapter
+//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
+//        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
+        AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
+        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter();
+        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
 
 
         /* -------------- ///[RecyclerView LayoutManager] -------------- */
@@ -78,19 +107,6 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
         mRecyclerView.getItemAnimator().setAddDuration(500);
         mRecyclerView.getItemAnimator().setRemoveDuration(500);
-
-
-        /* -------------- ///[RecyclerView Animators#Scroll Animation] -------------- */
-        ///Error: 无数据！需要用AnimationWrapAdapter
-//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mFastAdapter));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mFastAdapter));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
-
-        /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
-//        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
-        AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
-        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter();
-        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
 
 
         /* -------------- ///[HeaderHelper] -------------- */
