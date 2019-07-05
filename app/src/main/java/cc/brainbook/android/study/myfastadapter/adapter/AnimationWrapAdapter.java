@@ -1,9 +1,7 @@
 package cc.brainbook.android.study.myfastadapter.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 
-import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
 
 import java.util.List;

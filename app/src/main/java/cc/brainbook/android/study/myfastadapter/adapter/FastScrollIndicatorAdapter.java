@@ -1,14 +1,8 @@
 package cc.brainbook.android.study.myfastadapter.adapter;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
-
-import com.mikepenz.fastadapter.FastAdapter;
 import com.mikepenz.fastadapter.IItem;
 import com.turingtechnologies.materialscrollbar.ICustomAdapter;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
-
-import java.util.List;
 
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
@@ -48,6 +42,5 @@ public class FastScrollIndicatorAdapter<Item extends IItem> extends BaseWrapAdap
         }
         return "";
     }
-
 
 }
