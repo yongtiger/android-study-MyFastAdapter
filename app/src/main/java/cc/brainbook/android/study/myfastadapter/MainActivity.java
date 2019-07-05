@@ -2,7 +2,6 @@ package cc.brainbook.android.study.myfastadapter;
 
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,17 +20,15 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import com.mikepenz.fastadapter.listeners.OnClickListener;
 import com.mikepenz.fastadapter_extensions.HeaderHelper;
 import com.mikepenz.itemanimators.SlideDownAlphaAnimator;
-import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
-import com.turingtechnologies.materialscrollbar.DragScrollBar;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import cc.brainbook.android.headerdecoration.HeaderDecoration;
 import cc.brainbook.android.study.myfastadapter.adapter.AnimationWrapAdapter;
-import cc.brainbook.android.study.myfastadapter.adapter.FastScrollIndicatorAdapter;
+import cc.brainbook.android.study.myfastadapter.adapter.HeaderDecorationAdapter;
 import cc.brainbook.android.study.myfastadapter.dummy.ImageDummyData;
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
-import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
@@ -39,6 +36,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FastAdapter<IItem> mFastAdapter;
+    private HeaderDecoration mHeaderDecoration;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -60,18 +58,18 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.setAdapter(mFastAdapter);
 
 
-        /* -------------- ///[MaterialScrollBar] -------------- */
-        FastScrollIndicatorAdapter fastScrollIndicatorAdapter = new FastScrollIndicatorAdapter();
-//        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(mFastAdapter));
-
-        //add a FastScrollBar (Showcase compatibility)
-//        DragScrollBar materialScrollBar = new DragScrollBar(this, recyclerView, true);
-//        materialScrollBar.setHandleColor(ContextCompat.getColor(this, R.color.accent));
-//        materialScrollBar.setIndicator(new AlphabetIndicator(this), true);
-        ((DragScrollBar)findViewById(R.id.dragScrollBar))
-                .setHandleColor(ContextCompat.getColor(this, R.color.accent))
-                ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
-                .setIndicator(new AlphabetIndicator(this), true);
+//        /* -------------- ///[MaterialScrollBar] -------------- */
+//        FastScrollIndicatorAdapter fastScrollIndicatorAdapter = new FastScrollIndicatorAdapter();
+////        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(mFastAdapter));
+//
+//        //add a FastScrollBar (Showcase compatibility)
+////        DragScrollBar materialScrollBar = new DragScrollBar(this, recyclerView, true);
+////        materialScrollBar.setHandleColor(ContextCompat.getColor(this, R.color.accent));
+////        materialScrollBar.setIndicator(new AlphabetIndicator(this), true);
+//        ((DragScrollBar)findViewById(R.id.dragScrollBar))
+//                .setHandleColor(ContextCompat.getColor(this, R.color.accent))
+//                ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
+//                .setIndicator(new AlphabetIndicator(this), true);
 
 
         /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* -------------- ///[Chain Adapter] -------------- */
         ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
-        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(mFastAdapter)));
+//        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(mFastAdapter)));
 
 
         /* -------------- ///[RecyclerView LayoutManager] -------------- */
@@ -114,6 +112,34 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.getItemAnimator().setRemoveDuration(500);
 
 
+        /* ----------------------------- ///[ItemClick] ------------------------------- */
+        mFastAdapter.withOnClickListener(new OnClickListener<IItem>() {
+            @Override
+            public boolean onClick(@Nullable View v, IAdapter<IItem> adapter, IItem item, int position) {
+                ///[HeaderHelper]判断item和position是否为Header点击
+                if (item instanceof SimpleImageItem && ((SimpleImageItem)item).isHeader) {
+                    int headerPosition = 0;
+                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
+                        if (mFastAdapter.getItem(i) instanceof SimpleImageItem && ((SimpleImageItem)mFastAdapter.getItem(i)).isHeader) {
+                            headerPosition++;
+                        }
+                    }
+                    Toast.makeText(v.getContext(), "Header: "+headerPosition+"", Toast.LENGTH_SHORT).show();
+                } else {
+                    int itemPosition = position;
+                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
+                        if (mFastAdapter.getItem(i) instanceof SimpleImageItem && ((SimpleImageItem)mFastAdapter.getItem(i)).isHeader) {
+                            itemPosition--;
+                        }
+                    }
+                    Toast.makeText(v.getContext(), itemPosition+"", Toast.LENGTH_SHORT).show();
+                }
+
+                return false;
+            }
+        });
+
+
         /* -------------- ///[HeaderHelper] -------------- */
         ///https://github.com/mikepenz/FastAdapter/commit/1e90f79702b40b3991e39e16984db8a9a86dc631
         final HeaderHelper<IItem, IItem> headerHelper =
@@ -121,10 +147,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public IItem group(IItem currentItem, IItem nextItem, int currentPosition) {
                         if (currentItem == null) {
-                            return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                            return new SimpleImageItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
                         } else if (nextItem != null) {
                             if (((SimpleImageItem) currentItem).mName.charAt(0) != ((SimpleImageItem) nextItem).mName.charAt(0)) {
-                                return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                                return new SimpleImageItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
                             }
                         }
                         return null;
@@ -141,47 +167,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /* ----------------------------- ///[ItemClick] ------------------------------- */
-        mFastAdapter.withOnClickListener(new OnClickListener<IItem>() {
-            @Override
-            public boolean onClick(@Nullable View v, IAdapter<IItem> adapter, IItem item, int position) {
-                ///[HeaderHelper]判断item和position是否为Header点击
-                if (item instanceof SimpleItem && ((SimpleItem)item).isHeader) {
-                    int headerPosition = 0;
-                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
-                        if (mFastAdapter.getItem(i) instanceof SimpleItem && ((SimpleItem)mFastAdapter.getItem(i)).isHeader) {
-                            headerPosition++;
-                        }
-                    }
-                    Toast.makeText(v.getContext(), "Header: "+headerPosition+"", Toast.LENGTH_SHORT).show();
-                } else {
-                    int itemPosition = position;
-                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
-                        if (mFastAdapter.getItem(i) instanceof SimpleItem && ((SimpleItem)mFastAdapter.getItem(i)).isHeader) {
-                            itemPosition--;
-                        }
-                    }
-                    Toast.makeText(v.getContext(), itemPosition+"", Toast.LENGTH_SHORT).show();
-                }
-
-                return false;
-            }
-        });
+        /* -------------- ///[HeaderDecoration] -------------- */
+        HeaderDecorationAdapter headerDecorationAdapter = new HeaderDecorationAdapter();
+        // Add header decoration
+        mHeaderDecoration = new HeaderDecoration(headerDecorationAdapter);
+        mRecyclerView.addItemDecoration(mHeaderDecoration);
+        mRecyclerView.setAdapter(headerDecorationAdapter.wrap(mFastAdapter));
 
 
-        /* ------------------------------------------------------------------------------ */
-        ///set the items to your ItemAdapter
-//        itemAdapter.add(ImageDummyData.getSimpleImageItems());    ///or
+        /* ---------------- itemAdapter加载数据 ----------------- */
         ///if we do this. the first added items will be animated :D
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                //add some dummy data
+//                itemAdapter.add(ImageDummyData.getSimpleImageItems());  ///or
                 ///[HeaderHelper]
                 ///https://github.com/mikepenz/FastAdapter/commit/1e90f79702b40b3991e39e16984db8a9a86dc631
                 headerHelper.apply(new ArrayList<>(ImageDummyData.getSimpleImageItems()));
-
-                //add some dummy data
-                itemAdapter.add(ImageDummyData.getSimpleImageItems());
 
                 //restore selections (this has to be done after the items were added
                 mFastAdapter.withSavedInstanceState(savedInstanceState);
