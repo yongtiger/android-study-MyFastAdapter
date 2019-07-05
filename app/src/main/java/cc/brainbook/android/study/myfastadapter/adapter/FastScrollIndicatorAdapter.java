@@ -22,7 +22,8 @@ import cc.brainbook.android.study.myfastadapter.model.ModelIconItem;
  * https://github.com/krimin-killr21/MaterialScrollBar
  */
 ///[MaterialScrollBar]
-public class FastScrollIndicatorAdapter<Item extends IItem> extends RecyclerView.Adapter implements INameableAdapter, ICustomAdapter {
+//public class FastScrollIndicatorAdapter<Item extends IItem> extends RecyclerView.Adapter implements INameableAdapter, ICustomAdapter {
+public class FastScrollIndicatorAdapter<Item extends IItem> extends FastAdapter implements INameableAdapter, ICustomAdapter {
     @Override
     public Character getCharacterForElement(int position) {
         IItem item = getItem(position);
@@ -187,7 +188,9 @@ public class FastScrollIndicatorAdapter<Item extends IItem> extends RecyclerView
      */
     @Override
     public void setHasStableIds(boolean hasStableIds) {
-        mFastAdapter.setHasStableIds(hasStableIds);
+        if (mFastAdapter != null) {
+            mFastAdapter.setHasStableIds(hasStableIds);
+        }
     }
 
     /**

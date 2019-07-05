@@ -10,7 +10,8 @@ import java.util.List;
 
 import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 
-public class AnimationWrapAdapter<Item extends IItem> extends RecyclerView.Adapter {
+//public class AnimationWrapAdapter<Item extends IItem> extends RecyclerView.Adapter {
+public class AnimationWrapAdapter<Item extends IItem> extends FastAdapter {
 
     /*
      * GENERAL CODE NEEDED TO WRAP AN ADAPTER
@@ -127,9 +128,8 @@ public class AnimationWrapAdapter<Item extends IItem> extends RecyclerView.Adapt
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        mAnimationAdapter.onBindViewHolder(holder, position);   ///注意：必须加这行！否则无动画效果
         mFastAdapter.onBindViewHolder(holder, position);  ///注意：可以去掉这行，否则重复了
-
+        mAnimationAdapter.onBindViewHolder(holder, position);   ///注意：必须加这行！否则无动画效果
     }
 
     /**
@@ -142,7 +142,7 @@ public class AnimationWrapAdapter<Item extends IItem> extends RecyclerView.Adapt
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
         mFastAdapter.onBindViewHolder(holder, position, payloads);  ///注意：即使重复了也不能去掉这行！否则无数据显示
-        super.onBindViewHolder(holder, position, payloads); ///注意：必须加这行！否则无动画效果
+        mAnimationAdapter.onBindViewHolder(holder, position, payloads); ///注意：必须加这行！否则无动画效果
     }
 
     /**
@@ -152,7 +152,9 @@ public class AnimationWrapAdapter<Item extends IItem> extends RecyclerView.Adapt
      */
     @Override
     public void setHasStableIds(boolean hasStableIds) {
-        mFastAdapter.setHasStableIds(hasStableIds);
+        if (mFastAdapter != null) {
+            mFastAdapter.setHasStableIds(hasStableIds);
+        }
     }
 
     /**

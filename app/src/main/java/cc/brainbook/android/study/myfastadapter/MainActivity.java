@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
 //        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
         AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
         AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter();
-        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
+//        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
+        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(animationAdapter, mFastAdapter))); ///chain adapter
 
 
         /* -------------- ///[RecyclerView LayoutManager] -------------- */
