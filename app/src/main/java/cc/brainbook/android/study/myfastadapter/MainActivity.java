@@ -81,9 +81,13 @@ public class MainActivity extends AppCompatActivity {
 //        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
 //        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
         AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
-        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter();
-//        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
-        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(animationAdapter, mFastAdapter))); ///chain adapter
+        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter(animationAdapter);
+//        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///wrap adapter
+
+
+        /* -------------- ///[Chain Adapter] -------------- */
+        ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
+        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(mFastAdapter)));
 
 
         /* -------------- ///[RecyclerView LayoutManager] -------------- */

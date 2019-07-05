@@ -13,10 +13,8 @@ import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 public class AnimationWrapAdapter<Item extends IItem> extends BaseWrapAdapter {
     private AnimationAdapter mAnimationAdapter;
 
-    public AnimationWrapAdapter<Item> wrap(AnimationAdapter animationAdapter, FastAdapter fastAdapter) {
-        this.mAnimationAdapter = animationAdapter;
-        this.mFastAdapter = fastAdapter;
-        return this;
+    public AnimationWrapAdapter(AnimationAdapter animationAdapter) {
+        mAnimationAdapter = animationAdapter;
     }
 
     /**
@@ -27,7 +25,7 @@ public class AnimationWrapAdapter<Item extends IItem> extends BaseWrapAdapter {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);  ///注意：可以去掉这行，否则重复了
+        super.onBindViewHolder(holder, position);
         mAnimationAdapter.onBindViewHolder(holder, position);   ///注意：必须加这行！否则无动画效果
     }
 
@@ -40,7 +38,7 @@ public class AnimationWrapAdapter<Item extends IItem> extends BaseWrapAdapter {
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
-        super.onBindViewHolder(holder, position, payloads);  ///注意：即使重复了也不能去掉这行！否则无数据显示
+        super.onBindViewHolder(holder, position, payloads);
         mAnimationAdapter.onBindViewHolder(holder, position, payloads); ///注意：必须加这行！否则无动画效果
     }
 
