@@ -1,5 +1,7 @@
 package cc.brainbook.android.study.myfastadapter;
 
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,47 +10,69 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.mikepenz.fastadapter.FastAdapter;
+import com.mikepenz.fastadapter.IAdapter;
+import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.adapters.ItemAdapter;
+import com.mikepenz.fastadapter.listeners.OnClickListener;
+import com.mikepenz.fastadapter_extensions.HeaderHelper;
 import com.mikepenz.itemanimators.SlideDownAlphaAnimator;
 
-import cc.brainbook.android.study.myfastadapter.dummy.DummyContent;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+import cc.brainbook.android.study.myfastadapter.adapter.AnimationWrapAdapter;
+import cc.brainbook.android.study.myfastadapter.dummy.ImageDummyData;
+import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
+import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private FastAdapter<IItem> mFastAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //configure our fastAdapter
-        //get our recyclerView and do basic setup
         mRecyclerView = findViewById(R.id.rv);
 
 
-        /* -------------- LayoutManager -------------- */
+        /* ------------------- ///[FastAdapter] ------------------- */
+        ///create the ItemAdapter holding your Items
+        final ItemAdapter<SimpleImageItem> itemAdapter = new ItemAdapter<>();
+
+        ///create the managing FastAdapter, by passing in the itemAdapter
+        mFastAdapter = FastAdapter.with(itemAdapter);    ///or
+//        mFastAdapter = FastAdapter.with(Arrays.asList(itemAdapter));
+
+        ///set our adapters to the RecyclerView
+        mRecyclerView.setAdapter(mFastAdapter);
+
+
+        /* -------------- ///[RecyclerView LayoutManager] -------------- */
         ///LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); ///水平方向
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-//        ///GridLayoutManager
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        ///GridLayoutManager    ///or
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, true);
 //        gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL); ///水平方向
 //        mRecyclerView.setLayoutManager(gridLayoutManager);
 //
-//        ///StaggeredGridLayoutManager
+//        ///StaggeredGridLayoutManager    ///or
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 ////        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
 
-        mAdapter = new RecyclerViewAdapter(DummyContent.ITEM_MAP);
-//        mRecyclerView.setAdapter(mAdapter);
 
-
-        ///[RecyclerView Animators#Item Animation]
+        /* -------------- ///[RecyclerView Animators#Item Animation] -------------- */
         ///https://github.com/mikepenz/ItemAnimators
         ///Note: does not animate items on scroll, just when added, removed, moved, or changed
         mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
@@ -56,11 +80,92 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.getItemAnimator().setRemoveDuration(500);
 
 
-        ///[RecyclerView Animators#Scroll Animation]
-        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
-//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mAdapter));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mAdapter));
-        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mAdapter))); ///chain adapter
+        /* -------------- ///[RecyclerView Animators#Scroll Animation] -------------- */
+        ///Error: 无数据！需要用AnimationWrapAdapter
+//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
+
+        /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
+//        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
+        AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
+        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter();
+        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///chain adapter
+
+
+        /* -------------- ///[HeaderHelper] -------------- */
+        ///https://github.com/mikepenz/FastAdapter/commit/1e90f79702b40b3991e39e16984db8a9a86dc631
+        final HeaderHelper<IItem, IItem> headerHelper =
+                new HeaderHelper<>(itemAdapter, new HeaderHelper.GroupingFunction<IItem, IItem>() {
+                    @Override
+                    public IItem group(IItem currentItem, IItem nextItem, int currentPosition) {
+                        if (currentItem == null) {
+                            return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                        } else if (nextItem != null) {
+                            if (((SimpleImageItem) currentItem).mName.charAt(0) != ((SimpleImageItem) nextItem).mName.charAt(0)) {
+                                return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                            }
+                        }
+                        return null;
+                    }
+                });
+        headerHelper.setComparator(new Comparator<IItem>() {
+            public int compare(IItem f1, IItem f2) {
+                if (f1 instanceof SimpleImageItem && f2 instanceof SimpleImageItem) {
+                    return ((SimpleImageItem) f1).mName.compareTo(((SimpleImageItem) f2).mName);
+                } else {
+                    return f1.toString().compareTo(f2.toString());
+                }
+            }
+        });
+
+
+        /* ----------------------------- ///[ItemClick] ------------------------------- */
+        mFastAdapter.withOnClickListener(new OnClickListener<IItem>() {
+            @Override
+            public boolean onClick(@Nullable View v, IAdapter<IItem> adapter, IItem item, int position) {
+                ///[HeaderHelper]判断item和position是否为Header点击
+                if (item instanceof SimpleItem && ((SimpleItem)item).isHeader) {
+                    int headerPosition = 0;
+                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
+                        if (mFastAdapter.getItem(i) instanceof SimpleItem && ((SimpleItem)mFastAdapter.getItem(i)).isHeader) {
+                            headerPosition++;
+                        }
+                    }
+                    Toast.makeText(v.getContext(), "Header: "+headerPosition+"", Toast.LENGTH_SHORT).show();
+                } else {
+                    int itemPosition = position;
+                    for (int i = 0; i < position; i++) {    /// todo ...待优化!
+                        if (mFastAdapter.getItem(i) instanceof SimpleItem && ((SimpleItem)mFastAdapter.getItem(i)).isHeader) {
+                            itemPosition--;
+                        }
+                    }
+                    Toast.makeText(v.getContext(), itemPosition+"", Toast.LENGTH_SHORT).show();
+                }
+
+                return false;
+            }
+        });
+
+
+        /* ------------------------------------------------------------------------------ */
+        ///set the items to your ItemAdapter
+//        itemAdapter.add(ImageDummyData.getSimpleImageItems());    ///or
+        ///if we do this. the first added items will be animated :D
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ///[HeaderHelper]
+                ///https://github.com/mikepenz/FastAdapter/commit/1e90f79702b40b3991e39e16984db8a9a86dc631
+                headerHelper.apply(new ArrayList<>(ImageDummyData.getSimpleImageItems()));
+
+                //add some dummy data
+                itemAdapter.add(ImageDummyData.getSimpleImageItems());
+
+                //restore selections (this has to be done after the items were added
+                mFastAdapter.withSavedInstanceState(savedInstanceState);
+            }
+        }, 50);
 
     }
 
