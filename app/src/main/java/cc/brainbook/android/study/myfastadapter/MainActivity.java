@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = findViewById(R.id.rv);
-
 
         /* ------------------- ///[FastAdapter] ------------------- */
         ///create the ItemAdapter holding your Items
@@ -54,62 +52,9 @@ public class MainActivity extends AppCompatActivity {
         mFastAdapter = FastAdapter.with(itemAdapter);    ///or
 //        mFastAdapter = FastAdapter.with(Arrays.asList(itemAdapter));
 
-        ///set our adapters to the RecyclerView
-//        mRecyclerView.setAdapter(mFastAdapter);
-
-
-//        /* -------------- ///[MaterialScrollBar] -------------- */
-//        FastScrollIndicatorAdapter fastScrollIndicatorAdapter = new FastScrollIndicatorAdapter();
-////        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(mFastAdapter));
-//
-//        //add a FastScrollBar (Showcase compatibility)
-////        DragScrollBar materialScrollBar = new DragScrollBar(this, recyclerView, true);
-////        materialScrollBar.setHandleColor(ContextCompat.getColor(this, R.color.accent));
-////        materialScrollBar.setIndicator(new AlphabetIndicator(this), true);
-//        ((DragScrollBar)findViewById(R.id.dragScrollBar))
-//                .setHandleColor(ContextCompat.getColor(this, R.color.accent))
-//                ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
-//                .setIndicator(new AlphabetIndicator(this), true);
-
-
-        /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
-        ///Error: 无数据！需要用AnimationWrapAdapter
-//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mFastAdapter));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mFastAdapter));
-//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
-//        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
-        AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
-        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter(animationAdapter);
-//        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///wrap adapter
-
-
-        /* -------------- ///[Chain Adapter] -------------- */
-        ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
-//        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(mFastAdapter)));
-
-
-        /* -------------- ///[RecyclerView LayoutManager] -------------- */
-        ///LinearLayoutManager
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); ///水平方向
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-
-        ///GridLayoutManager    ///or
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, true);
-//        gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL); ///水平方向
-//        mRecyclerView.setLayoutManager(gridLayoutManager);
-//
-//        ///StaggeredGridLayoutManager    ///or
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-////        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
-
-
-        /* -------------- ///[RecyclerView Animators#Item Animation] -------------- */
-        ///https://github.com/mikepenz/ItemAnimators
-        ///Note: does not animate items on scroll, just when added, removed, moved, or changed
-        mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
-        mRecyclerView.getItemAnimator().setAddDuration(500);
-        mRecyclerView.getItemAnimator().setRemoveDuration(500);
+        //configure our fastAdapter
+        //as we provide id's for the items we want the hasStableIds enabled to speed up things
+        mFastAdapter.setHasStableIds(true);
 
 
         /* ----------------------------- ///[ItemClick] ------------------------------- */
@@ -165,6 +110,66 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        /* -------------- RecyclerView -------------- */
+        mRecyclerView = findViewById(R.id.rv);
+
+        ///set our adapters to the RecyclerView
+//        mRecyclerView.setAdapter(mFastAdapter);
+
+
+        /* -------------- ///[RecyclerView LayoutManager] -------------- */
+        ///LinearLayoutManager
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); ///水平方向
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        ///GridLayoutManager    ///or
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, true);
+//        gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL); ///水平方向
+//        mRecyclerView.setLayoutManager(gridLayoutManager);
+//
+//        ///StaggeredGridLayoutManager    ///or
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+////        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+
+
+        /* -------------- ///[RecyclerView Animators#Item Animation] -------------- */
+        ///https://github.com/mikepenz/ItemAnimators
+        ///Note: does not animate items on scroll, just when added, removed, moved, or changed
+        mRecyclerView.setItemAnimator(new SlideDownAlphaAnimator());
+        mRecyclerView.getItemAnimator().setAddDuration(500);
+        mRecyclerView.getItemAnimator().setRemoveDuration(500);
+
+//        /* -------------- ///[MaterialScrollBar] -------------- */
+//        FastScrollIndicatorAdapter fastScrollIndicatorAdapter = new FastScrollIndicatorAdapter();
+////        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(mFastAdapter));
+//
+//        //add a FastScrollBar (Showcase compatibility)
+////        DragScrollBar materialScrollBar = new DragScrollBar(this, recyclerView, true);
+////        materialScrollBar.setHandleColor(ContextCompat.getColor(this, R.color.accent));
+////        materialScrollBar.setIndicator(new AlphabetIndicator(this), true);
+//        ((DragScrollBar)findViewById(R.id.dragScrollBar))
+//                .setHandleColor(ContextCompat.getColor(this, R.color.accent))
+//                ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
+//                .setIndicator(new AlphabetIndicator(this), true);
+
+
+        /* -------------- ///[RecyclerView Animators#Scroll Animation]AnimationWrapAdapter -------------- */
+        ///Error: 无数据！需要用AnimationWrapAdapter
+//        mRecyclerView.setAdapter(new AlphaInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(mFastAdapter));
+//        mRecyclerView.setAdapter(new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter))); ///chain adapter
+//        ///https://github.com/wasabeef/recyclerview-animators/tree/2.3.0
+        AnimationAdapter animationAdapter = (new ScaleInAnimationAdapter(new AlphaInAnimationAdapter(mFastAdapter)));   ///chain adapter
+        AnimationWrapAdapter animationWrapAdapter = new AnimationWrapAdapter(animationAdapter);
+//        mRecyclerView.setAdapter(animationWrapAdapter.wrap(animationAdapter, mFastAdapter)); ///wrap adapter
+
+
+        /* -------------- ///[Chain Adapter] -------------- */
+        ///注意：setIndicator()要求fastScrollIndicatorAdapter必须为mRecyclerView.setAdapter()的最外层（即实现INameableAdapter）
+//        mRecyclerView.setAdapter(fastScrollIndicatorAdapter.wrap(animationWrapAdapter.wrap(mFastAdapter)));
 
 
         /* -------------- ///[HeaderDecoration] -------------- */
