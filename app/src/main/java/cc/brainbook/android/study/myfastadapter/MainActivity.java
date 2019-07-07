@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         /* -------------- RecyclerView -------------- */
-        mRecyclerView = findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv);
 
         ///set our adapters to the RecyclerView
 //        mRecyclerView.setAdapter(mFastAdapter);

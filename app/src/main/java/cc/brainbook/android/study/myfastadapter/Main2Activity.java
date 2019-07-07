@@ -15,7 +15,7 @@ import java.util.List;
 
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
-
+///[Multiple ItemAdapter]
 public class Main2Activity extends AppCompatActivity {
     private static final String[] headers = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
@@ -54,7 +54,7 @@ public class Main2Activity extends AppCompatActivity {
 
 
         /* ------------------- RecyclerView ------------------- */
-        mRecyclerView = findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
