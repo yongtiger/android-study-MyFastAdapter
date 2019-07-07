@@ -19,4 +19,6 @@
     <item name="loader_item_id" type="id" />
     <!--///[FastAdapter#Load/Error/Empty#ErrorItem]-->
     <item name="error_item_id" type="id" />
+    <!--///[FastAdapter#Load/Error/Empty#EmptyItem]-->
+    <item name="empty_item_id" type="id" />
 </resources>

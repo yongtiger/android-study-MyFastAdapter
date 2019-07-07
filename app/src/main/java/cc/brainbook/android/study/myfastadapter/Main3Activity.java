@@ -13,6 +13,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cc.brainbook.android.study.myfastadapter.items.EmptyItem;
 import cc.brainbook.android.study.myfastadapter.items.ErrorItem;
 import cc.brainbook.android.study.myfastadapter.items.LoaderItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
@@ -36,7 +37,7 @@ public class Main3Activity extends AppCompatActivity {
         ///[FastAdapter#Load/Error/Empty#LoaderItem]
         itemAdapter.add(new LoaderItem());
 
-//        ///模拟异步加载网络数据：成功
+//        ///模拟异步加载网络数据：失败
 //        //if we do this. the first added items will be animated :D
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
@@ -44,19 +45,15 @@ public class Main3Activity extends AppCompatActivity {
 //                ///remove loader
 //                itemAdapter.clear();
 //
-//                ///add some dummy data
-//                List<IItem> items = new ArrayList<>();
-//                for (int i = 1; i <= 25; i++) {
-//                    items.add(new SimpleItem().withName("Test " + i).withIdentifier(100 + i));
-//                }
-//                itemAdapter.add(items);
+//                ///[FastAdapter#Load/Error/Empty#ErrorItem]
+//                itemAdapter.add(new ErrorItem());
 //
 //                //restore selections (this has to be done after the items were added
 //                mFastAdapter.withSavedInstanceState(savedInstanceState);
 //            }
 //        }, 5000);
 
-        ///模拟异步加载网络数据：失败
+        ///模拟异步加载网络数据：成功
         //if we do this. the first added items will be animated :D
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -64,8 +61,17 @@ public class Main3Activity extends AppCompatActivity {
                 ///remove loader
                 itemAdapter.clear();
 
-                ///[FastAdapter#Load/Error/Empty#ErrorItem]
-                itemAdapter.add(new ErrorItem());
+                ///add some dummy data
+                List<IItem> items = new ArrayList<>();
+//                for (int i = 1; i <= 25; i++) {
+//                    items.add(new SimpleItem().withName("Test " + i).withIdentifier(100 + i));
+//                }
+                itemAdapter.add(items);
+
+                ///[FastAdapter#Load/Error/Empty#EmptyItem]
+                if (itemAdapter.getAdapterItemCount() == 0) {
+                    itemAdapter.add(new EmptyItem());
+                }
 
                 //restore selections (this has to be done after the items were added
                 mFastAdapter.withSavedInstanceState(savedInstanceState);
