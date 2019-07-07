@@ -13,12 +13,12 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import cc.brainbook.android.study.myfastadapter.items.ErrorItem;
 import cc.brainbook.android.study.myfastadapter.items.LoaderItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
 
 ///[FastAdapter#LoaderItem]
 public class Main3Activity extends AppCompatActivity {
-
     private RecyclerView mRecyclerView;
     private FastAdapter<IItem> mFastAdapter;
 
@@ -32,10 +32,31 @@ public class Main3Activity extends AppCompatActivity {
         mFastAdapter = FastAdapter.with(itemAdapter);
 
 
-        /* ------------------- ///[FastAdapter#LoaderItem] ------------------- */
+        /* ------------------- ///[FastAdapter#Load/Error/Empty] ------------------- */
+        ///[FastAdapter#Load/Error/Empty#LoaderItem]
         itemAdapter.add(new LoaderItem());
 
-        ///模拟异步加载网络数据
+//        ///模拟异步加载网络数据：成功
+//        //if we do this. the first added items will be animated :D
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                ///remove loader
+//                itemAdapter.clear();
+//
+//                ///add some dummy data
+//                List<IItem> items = new ArrayList<>();
+//                for (int i = 1; i <= 25; i++) {
+//                    items.add(new SimpleItem().withName("Test " + i).withIdentifier(100 + i));
+//                }
+//                itemAdapter.add(items);
+//
+//                //restore selections (this has to be done after the items were added
+//                mFastAdapter.withSavedInstanceState(savedInstanceState);
+//            }
+//        }, 5000);
+
+        ///模拟异步加载网络数据：失败
         //if we do this. the first added items will be animated :D
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -43,12 +64,8 @@ public class Main3Activity extends AppCompatActivity {
                 ///remove loader
                 itemAdapter.clear();
 
-                ///add some dummy data
-                List<IItem> items = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    items.add(new SimpleItem().withName("Test " + i).withIdentifier(100 + i));
-                }
-                itemAdapter.add(items);
+                ///[FastAdapter#Load/Error/Empty#ErrorItem]
+                itemAdapter.add(new ErrorItem());
 
                 //restore selections (this has to be done after the items were added
                 mFastAdapter.withSavedInstanceState(savedInstanceState);

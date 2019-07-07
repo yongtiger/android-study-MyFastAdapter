@@ -10,12 +10,9 @@ import java.util.List;
 
 import cc.brainbook.android.study.myfastadapter.R;
 
-/**
- * Created by mikepenz on 28.12.15.
- */
-///[FastAdapter#Load/Error/Empty#LoaderItem]
+///[FastAdapter#Load/Error/Empty#ErrorItem]
 ///https://github.com/mikepenz/AboutLibraries/blob/v6.2.3/library/src/main/java/com/mikepenz/aboutlibraries/ui/item/LoaderItem.java
-public class LoaderItem extends AbstractItem<LoaderItem, LoaderItem.ViewHolder> {
+public class ErrorItem extends AbstractItem<ErrorItem, ErrorItem.ViewHolder> {
     @Override
     public boolean isSelectable() {
         return false;
@@ -28,7 +25,7 @@ public class LoaderItem extends AbstractItem<LoaderItem, LoaderItem.ViewHolder> 
      */
     @Override
     public int getType() {
-        return R.id.loader_item_id;
+        return R.id.error_item_id;
     }
 
     /**
@@ -38,7 +35,7 @@ public class LoaderItem extends AbstractItem<LoaderItem, LoaderItem.ViewHolder> 
      */
     @Override
     public int getLayoutRes() {
-        return R.layout.listloader_opensource;
+        return R.layout.listerror_opensource;
     }
 
     /**
@@ -47,7 +44,7 @@ public class LoaderItem extends AbstractItem<LoaderItem, LoaderItem.ViewHolder> 
      * @param holder the viewHolder of this item
      */
     @Override
-    public void bindView(final ViewHolder holder, List<Object> payloads) {
+    public void bindView(final ErrorItem.ViewHolder holder, List<Object> payloads) {
         super.bindView(holder, payloads);
     }
 
@@ -59,8 +56,8 @@ public class LoaderItem extends AbstractItem<LoaderItem, LoaderItem.ViewHolder> 
      */
     @NonNull
     @Override
-    public ViewHolder getViewHolder(View v) {
-        return new ViewHolder(v);
+    public ErrorItem.ViewHolder getViewHolder(View v) {
+        return new ErrorItem.ViewHolder(v);
     }
 
     /**
