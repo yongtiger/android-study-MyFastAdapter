@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.commons.adapters.BaseWrapAdapter;
 
 import java.security.SecureRandom;
 

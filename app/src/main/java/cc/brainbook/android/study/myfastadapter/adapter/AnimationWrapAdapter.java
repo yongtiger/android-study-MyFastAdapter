@@ -3,6 +3,7 @@ package cc.brainbook.android.study.myfastadapter.adapter;
 import android.support.v7.widget.RecyclerView;
 
 import com.mikepenz.fastadapter.IItem;
+import com.mikepenz.fastadapter.commons.adapters.BaseWrapAdapter;
 
 import java.util.List;
 

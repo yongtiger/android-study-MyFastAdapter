@@ -52,27 +52,27 @@ dependencies {
 
     /* ------------------------ ///[FastAdapter] ------------------------ */
     ///select all
-//    implementation 'com.github.yongtiger:android-FastAdapter:v0.0.7'
+    implementation 'com.github.yongtiger:android-FastAdapter:v0.0.9'
 
     ///https://github.com/mikepenz/FastAdapter/tree/v3.2.9
 //    The library is split up into core, commons, and extensions. The core functions are included in the following dependency.
-    implementation 'com.github.yongtiger.android-FastAdapter:library-core:v0.0.7'
+//    implementation 'com.github.yongtiger.android-FastAdapter:library-core:v0.0.9'
 //    implementation 'com.mikepenz:fastadapter:3.2.9'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
 //    The commons package comes with some useful helpers (which are not needed in all cases) This one for example includes the FastItemAdapter
-    implementation 'com.github.yongtiger.android-FastAdapter:library-commons:v0.0.7'
+//    implementation 'com.github.yongtiger.android-FastAdapter:library-commons:v0.0.9'
 //    implementation 'com.mikepenz:fastadapter-commons:3.2.9'
 
 //    Expandable support is included and can be added via this
-    implementation 'com.github.yongtiger.android-FastAdapter:library-extensions-expandable:v0.0.7'
+//    implementation 'com.github.yongtiger.android-FastAdapter:library-extensions-expandable:v0.0.9'
 //    implementation 'com.mikepenz:fastadapter-extensions-expandable:3.2.9'
 //The tiny Materialize library used for its useful helper classes
 //    implementation 'com.mikepenz:materialize:1.1.2@aar'
 
 //    Many helper classes are included in the following dependency. (This functionality also needs the Expandable extension
-    implementation 'com.github.yongtiger.android-FastAdapter:library-extensions:v0.0.7'
+//    implementation 'com.github.yongtiger.android-FastAdapter:library-extensions:v0.0.8'
 //    implementation 'com.mikepenz:fastadapter-extensions:3.2.9'
     implementation 'com.android.support:design:28.0.0'
 //The tiny Materialize library used for its useful helper classes

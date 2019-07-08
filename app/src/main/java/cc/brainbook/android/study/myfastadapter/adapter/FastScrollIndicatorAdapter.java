@@ -2,6 +2,7 @@ package cc.brainbook.android.study.myfastadapter.adapter;
 
 import com.mikepenz.fastadapter.IItem;
 
+import com.mikepenz.fastadapter.commons.adapters.BaseWrapAdapter;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
