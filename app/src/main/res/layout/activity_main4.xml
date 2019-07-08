@@ -13,4 +13,19 @@
         android:clipToPadding="false"
         android:padding="8dp" />
 
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onDeleteClick"
+        android:text="Delete" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnDelete"
+        android:onClick="onAddClick"
+        android:text="Add" />
+
 </RelativeLayout>

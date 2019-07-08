@@ -18,7 +18,7 @@ import cc.brainbook.android.study.myfastadapter.items.ErrorItem;
 import cc.brainbook.android.study.myfastadapter.items.LoaderItem;
 import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
 
-///[FastAdapter#LoaderItem]
+///[FastAdapter#Load/Error/Empty]
 public class Main3Activity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FastAdapter<IItem> mFastAdapter;
