@@ -40,7 +40,7 @@ public class HeaderDecorationAdapter<Item extends IItem> extends BaseWrapAdapter
 
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-        TextView textView = (TextView) holder.itemView;
+        TextView textView = (TextView) holder.itemView.findViewById(R.id.tv_text);
         textView.setText(String.valueOf((char) getHeaderId(position)));
         textView.setBackgroundColor(getRandomColor());
     }

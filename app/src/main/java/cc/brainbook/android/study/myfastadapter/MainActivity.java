@@ -29,6 +29,7 @@ import cc.brainbook.android.study.myfastadapter.adapter.AnimationWrapAdapter;
 import cc.brainbook.android.study.myfastadapter.adapter.HeaderDecorationAdapter;
 import cc.brainbook.android.study.myfastadapter.dummy.ImageDummyData;
 import cc.brainbook.android.study.myfastadapter.items.SimpleImageItem;
+import cc.brainbook.android.study.myfastadapter.items.SimpleItem;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
@@ -92,10 +93,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public IItem group(IItem currentItem, IItem nextItem, int currentPosition) {
                         if (currentItem == null) {
-                            return new SimpleImageItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                            return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
                         } else if (nextItem != null) {
                             if (((SimpleImageItem) currentItem).mName.charAt(0) != ((SimpleImageItem) nextItem).mName.charAt(0)) {
-                                return new SimpleImageItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
+                                return new SimpleItem().isHeader(true).withName(((SimpleImageItem) nextItem).mName.charAt(0) + "");
                             }
                         }
                         return null;
@@ -186,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //add some dummy data
-//                itemAdapter.add(ImageDummyData.getSimpleImageItems());  ///or
+                itemAdapter.add(ImageDummyData.getSimpleImageItems());  ///or
                 ///[HeaderHelper]
                 ///https://github.com/mikepenz/FastAdapter/commit/1e90f79702b40b3991e39e16984db8a9a86dc631
-                headerHelper.apply(new ArrayList<>(ImageDummyData.getSimpleImageItems()));
+//                headerHelper.apply(new ArrayList<>(ImageDummyData.getSimpleImageItems()));
 
                 //restore selections (this has to be done after the items were added
                 mFastAdapter.withSavedInstanceState(savedInstanceState);
